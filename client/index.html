@@ -45,12 +45,33 @@
                                     <!-- /input-group -->
                                     <ul class="list-group col-md-6">
                                         <li class="list-group-item list-group-item-info" v-for="(note, index) in notes" v-if="!note.isDone">
-                                            <h6 >
-                                                {{note.noteValue}}
-                                                <span class="glyphicon glyphicon-remove pull-right" v-on:click="deleteIt(index)"></span>
-                                                <span class="glyphicon glyphicon-ok pull-right" v-on:click="toggleDone(index)"></span>
-                                            </h6>
-                                            <h6>{{note.newKey}}</h6>    
+                                            <div class="row" v-if="!note.isEditable">
+                                                <div class="col-md-8">
+                                                    <h5>
+                                                        {{note.noteValue}}
+                                                    </h5>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <h6>
+                                                        <span class="glyphicon glyphicon-remove pull-right" v-on:click="deleteIt(index)"></span>
+                                                        <span class="glyphicon glyphicon-ok pull-right" v-on:click="toggleDone(index)"></span>
+                                                        <span class="glyphicon glyphicon-pencil pull-right" v-on:click="note.isEditable = !note.isEditable"></span>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div  class="row" v-else>
+                                                <div class="col-md-8">
+                                                    <h6>
+                                                        <input type="text" class="form-control" placeholder="" v-model="note.noteValue"  v-on:keyup.enter="editNote(note.id, index)"
+                                                    required>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <h6>
+                                                        <span class="glyphicon glyphicon-remove pull-right" v-on:click="note.isEditable = !note.isEditable"></span>
+                                                    </h6>
+                                                </div>
+                                            </div>
                                         </li>
                                     </ul>
                                 </div>

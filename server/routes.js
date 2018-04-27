@@ -61,6 +61,29 @@ module.exports = [
             }
         }
     },
+
+    {
+        path: '/edit/{noteId}',
+        method: 'POST',
+        handler: function (request, reply) {
+            var newNoteValue = request.payload.noteValue;
+            var id = request.params.noteId;
+            connection.query('UPDATE notes SET ? WHERE ?', [{ noteValue: newNoteValue }, { id: id }],function (error, results, fields) {
+                if (error) throw error;
+
+                else {
+                    reply(true);
+                }
+            });
+        },
+        config: {
+            cors: {
+                origin: ['*'],
+                additionalHeaders: ['cache-control', 'x-requested-with']
+            }
+        }
+    },
+    
     {
         path: '/deletenote',
         method: 'POST',

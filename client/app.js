@@ -18,7 +18,8 @@ var app = new Vue({
             if(this.newNoteValue.length != 0){
                 var newNote = {
                     noteValue: this.newNoteValue,
-                    isDone: false
+                    isDone: false,
+                    isEditable:false
                 }
                 //
                 axios.post('/newnote', newNote)
@@ -31,9 +32,22 @@ var app = new Vue({
             }else{
                 this.isEmpty = true;
             }
-            
-           
-            
+        },
+        editNote: function (noteId, index) {
+            var newNoteValue = this.notes[index].noteValue;
+            if (newNoteValue.length != 0) {
+                var url = "/edit/"+noteId;
+                var note = {
+                    noteValue: newNoteValue
+                }
+                var self = this
+                axios.post(url, note)
+                    .then(function (response) {
+                        if (response.status == 200 && response.data == true) {
+                            self.notes[index].isEditable = false;
+                        }
+                    });
+            }
         },
         deleteIt: function (index) {
             var deletedNote = JSON.parse(JSON.stringify(this.notes[index]));
